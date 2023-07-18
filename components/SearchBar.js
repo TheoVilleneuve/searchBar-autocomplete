@@ -36,14 +36,20 @@ export default function searchBar() {
   const [adultCount, setAdultCount] = useState(1);
   const [youthCount, setYouthCount] = useState(0);
   const [seniorCount, setSeniorCount] = useState(0);
+  const [nbOfPassengers, setNbOfPassengers] = useState(1);
+
+  useEffect(() => {
+    console.log("NUM OF PASSENGERS IS", nbOfPassengers);
+  }, [nbOfPassengers]);
+
 
   const handleChange = (event) => {
     setOneOrRound(event.target.value);
   };
 
-  useEffect(() => {
-    console.log("SELECTED DEPARTURE DATE IS", selectedDepartureDate);
-  }, [selectedDepartureDate]);
+//   useEffect(() => {
+//     console.log("SELECTED DEPARTURE DATE IS", selectedDepartureDate);
+//   }, [selectedDepartureDate]);
 
   //Au chargement de la page, les options de villes sont les 5 plus recherchées
   useEffect(() => {
@@ -67,8 +73,8 @@ export default function searchBar() {
   //A partir de la ville de départ, top 5 des destinations
 
   useEffect(() => {
-    console.log("DEPARTURE IS", departure);
-    console.log("DEPARTURECITY IS", departureCity);
+    // console.log("DEPARTURE IS", departure);
+    // console.log("DEPARTURECITY IS", departureCity);
 
     fetch(`https://api.comparatrip.eu/cities/popular/from/${departureCity}/5`)
       .then((response) => response.json())
@@ -86,13 +92,13 @@ export default function searchBar() {
       });
   }, [departure]);
 
-  useEffect(() => {
-    console.log("OPTIONS ARE", options);
-  }, [options]);
+//   useEffect(() => {
+//     console.log("OPTIONS ARE", options);
+//   }, [options]);
 
-  useEffect(() => {
-    console.log("TOP DESTINATIONS ARE", topDestinations);
-  }, [topDestinations]);
+//   useEffect(() => {
+//     console.log("TOP DESTINATIONS ARE", topDestinations);
+//   }, [topDestinations]);
 
   //Switch component
   const GreenSwitch = styled(Switch)(({ theme }) => ({
@@ -127,7 +133,7 @@ export default function searchBar() {
         </FormControl>
 
         <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-          <Select className={styles.count} value={"test"}>
+          <Select className={styles.count} value={nbOfPassengers}>
             {/* Compteur de places cat.adulte */}
             <MenuItem value={adultCount} className={styles.counterContainer}>
               <div className={styles.categoryContainer}>
@@ -140,8 +146,8 @@ export default function searchBar() {
                   id="decrementBtn"
                   onClick={() =>
                     adultCount > 0
-                      ? setAdultCount(adultCount - 1)
-                      : setAdultCount(adultCount)
+                    ? (setAdultCount(adultCount - 1), setNbOfPassengers(nbOfPassengers - 1))
+                    : (setAdultCount(adultCount), setNbOfPassengers(nbOfPassengers))
                   }
                 >
                   -
@@ -152,7 +158,10 @@ export default function searchBar() {
                 <button
                   className={styles.countBtn}
                   id="incrementBtn"
-                  onClick={() => setAdultCount(adultCount + 1)}
+                  onClick={() => {
+                    setAdultCount(adultCount + 1);
+                    setNbOfPassengers(nbOfPassengers + 1);
+                }}
                 >
                   +
                 </button>
@@ -168,11 +177,11 @@ export default function searchBar() {
                 <button
                   className={styles.countBtn}
                   id="decrementBtn"
-                  onClick={() =>
+                  onClick={() => {
                     youthCount > 0
-                      ? setYouthCount(youthCount - 1)
-                      : setYouthCount(youthCount)
-                  }
+                        ? (setYouthCount(youthCount - 1), setNbOfPassengers(nbOfPassengers - 1))
+                        : (setYouthCount(youthCount), setNbOfPassengers(nbOfPassengers))
+                }}
                 >
                   -
                 </button>
@@ -182,7 +191,10 @@ export default function searchBar() {
                 <button
                   className={styles.countBtn}
                   id="incrementBtn"
-                  onClick={() => setYouthCount(youthCount + 1)}
+                  onClick={() => {
+                    setYouthCount(youthCount + 1);
+                    setNbOfPassengers(nbOfPassengers + 1);
+                }}
                 >
                   +
                 </button>
@@ -199,11 +211,11 @@ export default function searchBar() {
                 <button
                   className={styles.countBtn}
                   id="decrementBtn"
-                  onClick={() =>
+                  onClick={() => {
                     seniorCount > 0
-                      ? setSeniorCount(seniorCount - 1)
-                      : setSeniorCount(seniorCount)
-                  }
+                        ? (setSeniorCount(seniorCount - 1), setNbOfPassengers(nbOfPassengers - 1))
+                        : (setSeniorCount(seniorCount), setNbOfPassengers(nbOfPassengers));
+                }}
                 >
                   -
                 </button>
@@ -213,12 +225,21 @@ export default function searchBar() {
                 <button
                   className={styles.countBtn}
                   id="incrementBtn"
-                  onClick={() => setSeniorCount(seniorCount + 1)}
+                  onClick={() => {
+                    setSeniorCount(seniorCount + 1);
+                    setNbOfPassengers(nbOfPassengers + 1);
+                }}
                 >
                   +
                 </button>
               </div>
             </MenuItem>
+
+            {/* Nb of passengers in total */}
+            <div value={nbOfPassengers} className={styles.counterContainer}>
+                {nbOfPassengers} passenger(s)
+            </div>
+
           </Select>
         </FormControl>
       </div>

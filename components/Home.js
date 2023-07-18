@@ -6,7 +6,9 @@ export default function Home() {
     <div className={styles.main}>
       <div className={styles.imgHeader}>
         <SearchBar/>
+        <h1 className={styles.catchPhrase}>Go wherever you want, <br/> Whenever you want.</h1>
       </div>
+      
     </div>
   );
 }

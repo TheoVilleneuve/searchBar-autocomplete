@@ -5,7 +5,6 @@
   justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
-  /* padding: 20vh 2vw 0 2vw; */
 }
 
 .imgHeader {
@@ -17,7 +16,13 @@
   height: 40vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  position: relative;
+  padding-top: 5%;
+}
+
+.catchPhrase {
+  justify-self: flex-start;
+  align-self: flex-start;
+  margin-left: 3%;
+  position: absolute;
 }
