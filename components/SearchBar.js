@@ -146,6 +146,7 @@ export default function searchBar() {
             <MenuItem value={"Round trip"}>Round trip</MenuItem>
           </Select>
         </FormControl>
+
       </div>
 
       <div className={styles.autocompleteContainer}>
@@ -211,6 +212,9 @@ export default function searchBar() {
             <DatePicker
               value={selectedDepartureDate}
               onChange={(date) => setSelectedDepartureDate(date)}
+              sx={{
+                width: 170,
+              }}
             />
           </LocalizationProvider>
 
@@ -219,8 +223,7 @@ export default function searchBar() {
               value={selectedArrivalDate}
               onChange={(date) => setSelectedArrivalDate(date)}
               sx={{
-                width: 160, 
-                height: 40,
+                width: 170,
               }}
             />
           </LocalizationProvider>
