@@ -30,13 +30,18 @@ export default function searchBar() {
   const [selectedDepartureDate, setSelectedDepartureDate] = useState(null);
   const [selectedArrivalDate, setSelectedArrivalDate] = useState(null);
 
-  useEffect(() => {
-    console.log("SELECTED DEPARTURE DATE IS", selectedDepartureDate);
-  }, [selectedDepartureDate]);
-
+  // Compteur billets adulte/jeune/senior
+  const [adultCount, setAdultCount] = useState(1);
+  const [youthCount, setYouthCount] = useState(0);
+  const [seniorCount, setSeniorCount] = useState(0);
+  
   const handleChange = (event) => {
     setOneOrRound(event.target.value);
   };
+
+  useEffect(() => {
+    console.log("SELECTED DEPARTURE DATE IS", selectedDepartureDate);
+  }, [selectedDepartureDate]);
 
   //Au chargement de la page, les options de villes sont les 5 plus recherchées
   useEffect(() => {
@@ -147,6 +152,105 @@ export default function searchBar() {
           </Select>
         </FormControl>
 
+        <FormControl
+          variant="standard"
+          sx={{ m: 1, minWidth: 200 }}
+        >
+        
+          <Select className={styles.count} value={'test'}>
+            {/* Compteur de places cat.adulte */}
+            <MenuItem value={adultCount} className={styles.counterContainer}>
+              <div className={styles.categoryContainer}>
+                <p className={styles.categoryTicket}>Adult</p>
+                <p className={styles.ageTicket}>26+ years</p>
+              </div>
+              <div className={styles.buttonsContainer}>
+                <button
+                  className={styles.countBtn}
+                  id="decrementBtn"
+                  onClick={() =>
+                    adultCount > 0
+                      ? setAdultCount(adultCount - 1)
+                      : setAdultCount(adultCount)
+                  }
+                >
+                  -
+                </button>
+                <span className={styles.counter} id="counter">
+                  {adultCount}
+                </span>
+                <button
+                  className={styles.countBtn}
+                  id="incrementBtn"
+                  onClick={() => setAdultCount(adultCount + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </MenuItem>
+{/* Compteur de places cat.jeune */}
+            <MenuItem value={youthCount} className={styles.counterContainer}>
+              <div className={styles.categoryContainer}>
+                <p className={styles.categoryTicket}>Youth</p>
+                <p className={styles.ageTicket}>0-25 years</p>
+              </div>
+              <div className={styles.buttonsContainer}>
+                <button
+                  className={styles.countBtn}
+                  id="decrementBtn"
+                  onClick={() =>
+                    youthCount > 0
+                      ? setYouthCount(youthCount - 1)
+                      : setYouthCount(youthCount)
+                  }
+                >
+                  -
+                </button>
+                <span className={styles.counter} id="counter">
+                  {youthCount}
+                </span>
+                <button
+                  className={styles.countBtn}
+                  id="incrementBtn"
+                  onClick={() => setYouthCount(youthCount + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </MenuItem>
+
+            {/* Compteur de places cat.senior */}
+            <MenuItem value={seniorCount} className={styles.counterContainer}>
+              <div className={styles.categoryContainer}>
+                <p className={styles.categoryTicket}>Senior</p>
+                <p className={styles.ageTicket}>58+ years</p>
+              </div>
+              <div className={styles.buttonsContainer}>
+                <button
+                  className={styles.countBtn}
+                  id="decrementBtn"
+                  onClick={() =>
+                    seniorCount > 0
+                      ? setSeniorCount(seniorCount - 1)
+                      : setSeniorCount(seniorCount)
+                  }
+                >
+                  -
+                </button>
+                <span className={styles.counter} id="counter">
+                  {seniorCount}
+                </span>
+                <button
+                  className={styles.countBtn}
+                  id="incrementBtn"
+                  onClick={() => setSeniorCount(seniorCount + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </MenuItem>
+          </Select>
+        </FormControl>
       </div>
 
       <div className={styles.autocompleteContainer}>
