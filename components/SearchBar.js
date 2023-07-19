@@ -15,6 +15,7 @@ import { lightGreen } from "@mui/material/colors";
 import { alpha, styled } from "@mui/material/styles";
 
 import Button from "@mui/material/Button";
+import { DepartureBoard } from "@mui/icons-material";
 
 export default function searchBar() {
   const [options, setOptions] = useState([]);
@@ -38,18 +39,9 @@ export default function searchBar() {
   const [seniorCount, setSeniorCount] = useState(0);
   const [nbOfPassengers, setNbOfPassengers] = useState(1);
 
-  useEffect(() => {
-    console.log("NUM OF PASSENGERS IS", nbOfPassengers);
-  }, [nbOfPassengers]);
-
-
   const handleChange = (event) => {
     setOneOrRound(event.target.value);
   };
-
-//   useEffect(() => {
-//     console.log("SELECTED DEPARTURE DATE IS", selectedDepartureDate);
-//   }, [selectedDepartureDate]);
 
   //Au chargement de la page, les options de villes sont les 5 plus recherchées
   useEffect(() => {
@@ -64,8 +56,7 @@ export default function searchBar() {
               name: opt.unique_name,
             };
           });
-          setOptions([...formattedOptions]);
-          setArrivalOptions([...formattedOptions]);
+          setOptions(formattedOptions);
         }
       });
   }, []);
@@ -73,32 +64,8 @@ export default function searchBar() {
   //A partir de la ville de départ, top 5 des destinations
 
   useEffect(() => {
-    // console.log("DEPARTURE IS", departure);
-    // console.log("DEPARTURECITY IS", departureCity);
-
-    fetch(`https://api.comparatrip.eu/cities/popular/from/${departureCity}/5`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          let formattedTopDestinations = data.map((opt, i) => {
-            return {
-              label: opt.local_name,
-              id: opt.city_id,
-              name: opt.unique_name,
-            };
-          });
-          setTopDestinations([...formattedTopDestinations]);
-        }
-      });
-  }, [departure]);
-
-//   useEffect(() => {
-//     console.log("OPTIONS ARE", options);
-//   }, [options]);
-
-//   useEffect(() => {
-//     console.log("TOP DESTINATIONS ARE", topDestinations);
-//   }, [topDestinations]);
+    console.log("departure city updated", departureCity);
+  }, [departureCity]);
 
   //Switch component
   const GreenSwitch = styled(Switch)(({ theme }) => ({
@@ -146,8 +113,10 @@ export default function searchBar() {
                   id="decrementBtn"
                   onClick={() =>
                     adultCount > 0
-                    ? (setAdultCount(adultCount - 1), setNbOfPassengers(nbOfPassengers - 1))
-                    : (setAdultCount(adultCount), setNbOfPassengers(nbOfPassengers))
+                      ? (setAdultCount(adultCount - 1),
+                        setNbOfPassengers(nbOfPassengers - 1))
+                      : (setAdultCount(adultCount),
+                        setNbOfPassengers(nbOfPassengers))
                   }
                 >
                   -
@@ -161,7 +130,7 @@ export default function searchBar() {
                   onClick={() => {
                     setAdultCount(adultCount + 1);
                     setNbOfPassengers(nbOfPassengers + 1);
-                }}
+                  }}
                 >
                   +
                 </button>
@@ -179,9 +148,11 @@ export default function searchBar() {
                   id="decrementBtn"
                   onClick={() => {
                     youthCount > 0
-                        ? (setYouthCount(youthCount - 1), setNbOfPassengers(nbOfPassengers - 1))
-                        : (setYouthCount(youthCount), setNbOfPassengers(nbOfPassengers))
-                }}
+                      ? (setYouthCount(youthCount - 1),
+                        setNbOfPassengers(nbOfPassengers - 1))
+                      : (setYouthCount(youthCount),
+                        setNbOfPassengers(nbOfPassengers));
+                  }}
                 >
                   -
                 </button>
@@ -194,7 +165,7 @@ export default function searchBar() {
                   onClick={() => {
                     setYouthCount(youthCount + 1);
                     setNbOfPassengers(nbOfPassengers + 1);
-                }}
+                  }}
                 >
                   +
                 </button>
@@ -213,9 +184,11 @@ export default function searchBar() {
                   id="decrementBtn"
                   onClick={() => {
                     seniorCount > 0
-                        ? (setSeniorCount(seniorCount - 1), setNbOfPassengers(nbOfPassengers - 1))
-                        : (setSeniorCount(seniorCount), setNbOfPassengers(nbOfPassengers));
-                }}
+                      ? (setSeniorCount(seniorCount - 1),
+                        setNbOfPassengers(nbOfPassengers - 1))
+                      : (setSeniorCount(seniorCount),
+                        setNbOfPassengers(nbOfPassengers));
+                  }}
                 >
                   -
                 </button>
@@ -228,7 +201,7 @@ export default function searchBar() {
                   onClick={() => {
                     setSeniorCount(seniorCount + 1);
                     setNbOfPassengers(nbOfPassengers + 1);
-                }}
+                  }}
                 >
                   +
                 </button>
@@ -237,70 +210,111 @@ export default function searchBar() {
 
             {/* Nb of passengers in total */}
             <div value={nbOfPassengers} className={styles.counterContainer}>
-                {nbOfPassengers} passenger(s)
+              {nbOfPassengers} passenger(s)
             </div>
-
           </Select>
         </FormControl>
       </div>
 
       <div className={styles.autocompleteContainer}>
-        <Autocomplete
-          value={departure}
-          onChange={(event, newValue) => {
-            setDeparture(newValue.label);
-            setDepartureCity(newValue.name);
-          }}
-          disablePortal
-          options={options}
-          sx={{ width: 280 }}
-          inputValue={departure}
-          onInputChange={(event, newInputValue) => {
-            fetch(
-              `https://api.comparatrip.eu/cities/autocomplete/?q=${newInputValue}/`
-            )
-              .then((response) => response.json())
-              .then((data) => {
-                if (data) {
-                  let formattedOptions = data.map((opt, i) => {
-                    return { label: opt.local_name, id: opt.city_id };
-                  });
-                  setOptions([...formattedOptions]);
-                }
-              });
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="From : City, Station or Airport" />
-          )}
-        />
+        <div className={styles.inputContainer}>
+          <Autocomplete
+            value={departure}
+            disablePortal
+            options={options}
+            sx={{
+              marginTop: "10px",
+              marginRight: 1,
+              width: {
+                xs: "80vw",
+                sm: "80vw",
+                md: "50%",
+              },
+            }}
+            inputValue={departure}
+            //   Utilisation de la route pour autocomplete
+            onInputChange={(event, newInputValue) => {
+              fetch(
+                `https://api.comparatrip.eu/cities/autocomplete/?q=${newInputValue}/`
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data) {
+                    let formattedOptions = data.map((opt, i) => {
+                      return {
+                        label: opt.local_name,
+                        id: opt.city_id,
+                        name: opt.unique_name,
+                      };
+                    });
+                    setOptions([...formattedOptions]);
+                  }
+                });
+            }}
+            onChange={(event, newValue) => {
+              console.log("NEW VALUE IS", newValue);
+              setDeparture(newValue.label);
+              setDepartureCity(newValue.name);
 
-        <Autocomplete
-          value={arrival}
-          onChange={(event, newValue) => {
-            setArrival(newValue.label);
-          }}
-          disablePortal
-          options={arrivalOptions}
-          sx={{ width: 280 }}
-          inputValue={arrival}
-          onInputChange={(event, newInputValue) => {
-            fetch(
-              `https://api.comparatrip.eu/cities/autocomplete/?q=${newInputValue}/`
-            )
-              .then((response) => response.json())
-              .then((data) => {
-                if (data) {
-                  let formattedOptions = data.map((opt, i) => {
-                    return { label: opt.local_name, id: opt.city_id };
-                  });
-                  setArrivalOptions([...formattedOptions]);
-                }
-              });
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="To : City, Station or Airport" />
-          )}
-        />
+              fetch(
+                `https://api.comparatrip.eu/cities/popular/from/${newValue.name}/5`
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data) {
+                    console.log("OPTIONS ARE", data);
+                    let formattedTopDestinations = data.map((opt, i) => {
+                      return {
+                        label: opt.local_name,
+                        id: opt.city_id,
+                        name: opt.unique_name,
+                      };
+                    });
+                    setArrivalOptions(formattedTopDestinations);
+                  }
+                });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="From : City, Station or Airport" />
+            )}
+          />
+
+          <Autocomplete
+            value={arrival}
+            onChange={(event, newValue) => {
+              setArrival(newValue.label);
+            }}
+            disablePortal
+            options={arrivalOptions}
+            sx={{
+              marginTop: "10px",
+              marginRight: 1,
+              width: {
+                xs: "80vw",
+                sm: "80vw",
+                md: "50%",
+              },
+            }}
+            inputValue={arrival}
+            onInputChange={(event, newInputValue) => {
+              fetch(
+                `https://api.comparatrip.eu/cities/autocomplete/?q=${newInputValue}/`
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data) {
+                    let formattedOptions = data.map((opt, i) => {
+                      return { label: opt.local_name, id: opt.city_id };
+                    });
+                    setArrivalOptions(formattedOptions);
+                  }
+                });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="To : City, Station or Airport" />
+            )}
+          />
+        </div>
 
         <div className={styles.dateContainer}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -308,7 +322,13 @@ export default function searchBar() {
               value={selectedDepartureDate}
               onChange={(date) => setSelectedDepartureDate(date)}
               sx={{
-                width: 170,
+                marginTop: "10px",
+                marginRight: 1,
+                width: {
+                    xs: "50%",
+                    sm: "50%",
+                    md: "40%",
+                  },
               }}
             />
           </LocalizationProvider>
@@ -318,7 +338,13 @@ export default function searchBar() {
               value={selectedArrivalDate}
               onChange={(date) => setSelectedArrivalDate(date)}
               sx={{
-                width: 170,
+                marginTop: "10px",
+                marginRight: 1,
+                width: {
+                    xs: "50%",
+                    sm: "50%",
+                    md: "40%",
+                  },
               }}
             />
           </LocalizationProvider>
@@ -327,6 +353,8 @@ export default function searchBar() {
           size="large"
           variant="contained"
           sx={{
+            marginTop: "10px",
+                marginRight: 1,
             backgroundColor: "#769259",
             "&:hover": {
               backgroundColor: "#325547",
