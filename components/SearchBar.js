@@ -9,23 +9,20 @@ import Select from "@mui/material/Select";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
 import Switch from "@mui/material/Switch";
 import { lightGreen } from "@mui/material/colors";
 import { alpha, styled } from "@mui/material/styles";
-
 import Button from "@mui/material/Button";
-import { DepartureBoard } from "@mui/icons-material";
+
 
 export default function searchBar() {
   const [options, setOptions] = useState([]);
+
   const [departure, setDeparture] = useState(options[0]);
   const [departureCity, setDepartureCity] = useState("");
 
   const [arrivalOptions, setArrivalOptions] = useState([]);
   const [arrival, setArrival] = useState(options[0]);
-
-  const [topDestinations, setTopDestinations] = useState([]);
 
   //Permettre de sélectionner Aller simple ou A/R
   const [oneOrRound, setOneOrRound] = useState("One-way");
@@ -232,7 +229,7 @@ export default function searchBar() {
               },
             }}
             inputValue={departure}
-            //   Utilisation de la route pour autocomplete
+            //   Utilisation de la API pour autocomplete
             onInputChange={(event, newInputValue) => {
               fetch(
                 `https://api.comparatrip.eu/cities/autocomplete/?q=${newInputValue}/`
@@ -325,10 +322,10 @@ export default function searchBar() {
                 marginTop: "10px",
                 marginRight: 1,
                 width: {
-                    xs: "50%",
-                    sm: "50%",
-                    md: "40%",
-                  },
+                  xs: "50%",
+                  sm: "50%",
+                  md: "40%",
+                },
               }}
             />
           </LocalizationProvider>
@@ -341,10 +338,10 @@ export default function searchBar() {
                 marginTop: "10px",
                 marginRight: 1,
                 width: {
-                    xs: "50%",
-                    sm: "50%",
-                    md: "40%",
-                  },
+                  xs: "50%",
+                  sm: "50%",
+                  md: "40%",
+                },
               }}
             />
           </LocalizationProvider>
@@ -354,7 +351,7 @@ export default function searchBar() {
           variant="contained"
           sx={{
             marginTop: "10px",
-                marginRight: 1,
+            marginRight: 1,
             backgroundColor: "#769259",
             "&:hover": {
               backgroundColor: "#325547",
