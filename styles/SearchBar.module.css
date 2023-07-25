@@ -124,7 +124,6 @@
   }
 
   .autocompleteContainer {
-    background-color: aqua;
     height: auto;
     width: 100%;
     padding: 4%;
@@ -135,7 +134,6 @@
   }
 
   .inputContainer {
-    background-color: darkgoldenrod;
     width: auto;
     height: auto;
     display: flex;
@@ -144,7 +142,6 @@
 
   .dateContainer {
     margin-top: 3%;
-    background-color: crimson;
     width: 80vw;
     height: auto;
     display: flex;
